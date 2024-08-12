@@ -9,9 +9,9 @@ export default function home() {
     let decrementar = document.getElementById("decrementar").checked
     
     if (decrementar==false) {
-      setCuenta(cuenta++);
+      setCuenta(cuenta+=1);
     } else {
-      setCuenta(cuenta--);
+      setCuenta(cuenta-=1);
     }
     
   }
