@@ -1,6 +1,9 @@
 "use client"
 import Title from "@/components/title";
 import Button from "@/components/button";
+import styles from "./page.module.css"
+import clsx from "clsx";
+
 import { useState } from "react";
 
 export default function home() {
@@ -18,10 +21,23 @@ export default function home() {
   return(
     <div>
       <Title titulo="Home"/>
-      <h2>Contador: {cuenta}</h2>
-      <input type="checkbox" id="decrementar" name="decrementar"/>
+      <h2>Contador: <span className={
+        clsx
+        (
+          {
+            [styles.contador_menor]: cuenta<0,
+            [styles.contador_mayor]: cuenta>0
+          }
+        )
+      }>{cuenta}</span></h2>
+      <div className={styles.label}>
+      <input type="checkbox" id="decrementar" name="decrementar" className={styles.input}/>
       <label for="decrementar">decrementar</label>
-      <Button onClick={incrementarodecrementar} text="Realizar"/>
+      </div>
+      <Button variant="primary" onClick={incrementarodecrementar} text="Realizar"/>
+      <Button variant="primary" text="Primario"/>
+      <Button variant="secundary" text="Secundario"/>
+      <Button variant="ok" text="Ok"/>
     </div>
   )
 }
