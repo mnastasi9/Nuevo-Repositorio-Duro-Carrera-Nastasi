@@ -18,6 +18,15 @@ export default function home() {
     }
     
   }
+  function primario() {
+    console.log("Primario")
+  }
+  function secundario() {
+    console.log("Secundario")
+  }
+  function ok() {
+    console.log("Ok")
+  }
   return(
     <div>
       <Title titulo="Home"/>
@@ -35,9 +44,9 @@ export default function home() {
       <label for="decrementar">decrementar</label>
       </div>
       <Button variant="primary" onClick={incrementarodecrementar} text="Realizar"/>
-      <Button variant="primary" text="Primario"/>
-      <Button variant="secundary" text="Secundario"/>
-      <Button variant="ok" text="Ok"/>
+      <Button variant="primary" text="Primario" onClick={primario}/>
+      <Button variant="secundary" text="Secundario" onClick={secundario}/>
+      <Button variant="ok" text="Ok" onClick={ok}/>
     </div>
   )
 }
