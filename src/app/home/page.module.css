@@ -1,0 +1,16 @@
+.label {
+    display: flex;
+    flex-direction: row;
+}
+
+.input {
+    margin-right: 5px;
+}
+
+.contador_menor {
+    color: red;
+}
+
+.contador_mayor {
+    color: rgb(2, 131, 2);
+}

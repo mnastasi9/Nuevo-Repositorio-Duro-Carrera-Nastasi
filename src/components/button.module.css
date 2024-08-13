@@ -1,0 +1,17 @@
+.button {
+    width: 500px;
+    margin-top: 5px;
+}
+
+.variant_primary {
+    background-color: aqua;
+}
+
+.variant_secundary {
+    background-color: blueviolet;
+    color: aliceblue;
+}
+
+.variant_ok {
+    background-color: chartreuse;
+}
