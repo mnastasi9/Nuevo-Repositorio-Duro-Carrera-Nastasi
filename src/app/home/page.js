@@ -29,7 +29,7 @@ export default function home() {
   }
   return(
     <div>
-      <Title titulo="Home"/>
+      <Title titulo="homeeeeee"/>
       <h2>Contador: <span className={
         clsx
         (
