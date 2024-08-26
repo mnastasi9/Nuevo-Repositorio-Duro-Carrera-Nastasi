@@ -3,6 +3,7 @@
 .container {
     display: flex;
     height: 100vh;
+    flex-direction: row;
   }
   
   .sidebar {
@@ -19,6 +20,7 @@
     padding: 10px;
     cursor: pointer;
     border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
   }
   
   .avatar {
