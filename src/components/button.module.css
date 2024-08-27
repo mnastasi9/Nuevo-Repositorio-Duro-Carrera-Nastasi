@@ -15,3 +15,133 @@
 .variant_ok {
     background-color: chartreuse;
 }
+
+/* styles/ChatInterface.module.css */
+
+.container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 30%;
+    background-color: #f0f0f0;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: scroll;
+  }
+  
+  .contact {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .avatar {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .contactInfo {
+    flex: 1;
+  }
+  
+  .contactName {
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .contactMessage {
+    margin: 0;
+    color: #888;
+  }
+  
+  .chatWindow {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chatHeader {
+    background-color: #eee;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .chatBody {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .sentMessageContainer, .receivedMessageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Mensajes enviados a la derecha */
+    margin-bottom: 5px;
+  }
+  
+  .receivedMessageContainer {
+    align-items: flex-start; /* Mensajes recibidos a la izquierda */
+  }
+  
+  .sentMessage {
+    background-color: #dcf8c6;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0;
+  }
+  
+  .receivedMessage {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 0;
+  }
+  
+  .messageInfo {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .seenStatus {
+    margin-left: 5px;
+    font-size: 0.8em;
+    color: #0084ff; /* Color para el visto */
+  }
+  
+  .chatFooter {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .chatFooter input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  
+  .chatFooter button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #0084ff;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
+  }
