@@ -130,3 +130,31 @@
   border-radius: 20px;
   cursor: pointer;
 }
+
+.button {
+  border: none;
+}
+
+.buscarContacto {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  flex-direction: row;
+}
+
+.buscarContacto input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 10px;
+  border: none;
+}
+
+.buscarContacto button {
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
