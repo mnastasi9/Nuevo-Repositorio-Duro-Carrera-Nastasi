@@ -59,6 +59,13 @@
   background-color: #eee;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.divCabecera {
+  display: flex;
+  flex-wrap: nowrap;
   flex-direction: row;
 }
 
@@ -138,8 +145,10 @@
 .buscarContacto {
   display: flex;
   padding: 10px;
-  border-top: 1px solid #ccc;
   flex-direction: row;
+  background-color: #eee;
+  border-bottom: 1px solid #ccc;
+
 }
 
 .buscarContacto input {
@@ -157,4 +166,9 @@
   color: white;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.chatHeader button{
+  border: none; 
+
 }
