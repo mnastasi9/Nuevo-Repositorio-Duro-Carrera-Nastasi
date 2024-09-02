@@ -35,6 +35,25 @@
   height: 20px;
 }
 
+.inicio {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+
+  margin: 33% 0% 50% 50%;
+}
+
+/* .chatPlaceholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 50%;
+} */
+
 .contactInfo {
   flex: 1;
 }

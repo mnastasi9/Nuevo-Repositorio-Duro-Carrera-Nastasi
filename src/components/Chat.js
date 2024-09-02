@@ -39,9 +39,10 @@ const Chat = ({ currentChat, messages, inputValue, setInputValue, handleSendMess
           </div>
         </>
       ) : (
-        <div className={styles.chatPlaceholder}>
-          <h2>Seleccione un contacto para empezar a chatear.</h2>
-        </div>
+        <img src="imagenes/logo.compu.png" className={styles.inicio} />
+        // <div className={styles.chatPlaceholder}>
+        //   <img src="imagenes/logo.compu.png" className={styles.inicio} />
+        // </div>
       )}
     </div>
   );
