@@ -1,9 +1,21 @@
 "use client"
 // components/ChatInterface.js
+import { useSocket } from '@/hooks/useSpcket';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import ContactList from '../components/ContactList';
 import Chat from '../components/Chat';
 import styles from './page.module.css';
+
+export default function UsersRanking(){
+  const {socket, isConnected} = useSocket;
+  useEffect(()=>{
+
+  },[socket, isConnected]);
+  return(
+    <h1>Soy la ruta /ranking/users</h1>
+  )
+}
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
