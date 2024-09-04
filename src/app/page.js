@@ -1,21 +1,40 @@
 "use client"
 // components/ChatInterface.js
-import { useSocket } from '@/hooks/useSpcket';
+import { useSocket } from '@/hooks/useSocket';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import ContactList from '../components/ContactList';
 import Chat from '../components/Chat';
 import styles from './page.module.css';
+import Button from '@/components/button';
 
 export default function UsersRanking(){
-  const {socket, isConnected} = useSocket;
+
+  //Le aclaro a la pagina o componente  que quiero usar el  hook useSocket
+  const {socket, isConnected} = useSocket();
   useEffect(()=>{
+    //Para evitar que genere errores si no esta el socket
+    if(!socket)return;
+    socket.on('pingAll', (data) => {
+      console.log("Me llego el evento pingAll", data);
+    })
+
 
   },[socket, isConnected]);
+
+  function handleClick() {
+    socket.emit('pingAll', {message: "feli 5cm"});
+  }
+
   return(
-    <h1>Soy la ruta /ranking/users</h1>
+    <>
+      <h1>Soy la ruta /ranking/users</h1>
+      <Button onClick={handleClick} text="Enviar pingAll" />
+    </>
   )
 }
+
+
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
