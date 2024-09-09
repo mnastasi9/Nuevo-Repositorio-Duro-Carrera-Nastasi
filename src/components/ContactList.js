@@ -9,6 +9,10 @@ const ContactList = ({ contacts, searchTerm, handleSearchChange, handleChangeCha
 
   return (
     <div className={styles.sidebar}>
+      <div className={styles.perfil}>
+        <img src="imagenes/superman.jpg" className={styles.avatar}></img>
+        <button><img src="imagenes/3puntitos.png" className={styles.enviar} /></button>
+      </div>
       <div className={styles.buscarContacto}>
         <button><img src="imagenes/lupa.png" className={styles.enviar} /></button>
         <input
@@ -17,7 +21,6 @@ const ContactList = ({ contacts, searchTerm, handleSearchChange, handleChangeCha
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        <button><img src="imagenes/3puntitos.png" className={styles.enviar} /></button>
       </div>
       {filteredContacts.map(contact => (
         <button key={contact.id} onClick={() => handleChangeChat(contact)} className={styles.button}>
