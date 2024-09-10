@@ -19,7 +19,7 @@ const ChatInterface = () => {
     { id: 1, name: 'Rayo McQueen', avatar: 'imagenes/rayo.jpeg', lastMessage: 'Kuchau' },
     { id: 2, name: 'Cenicienta', avatar: 'imagenes/cenicienta.jpg', lastMessage: 'aaaaa' },
     { id: 3, name: 'Abi', avatar: 'imagenes/abi.jpg', lastMessage: 'pooobre looolooo' },
-    { id: 4, name: 'Shrek', avatar: 'imagenes/shrek.jpg', lastMessage: 'los ogros son como las cebollas' }
+    { id: 4, name: 'Shrek', avatar: 'imagenes/shrek.jpg', lastMessage: 'Los ogros son como las cebollas' }
   ];
 
   const handleSendMessage = () => {
