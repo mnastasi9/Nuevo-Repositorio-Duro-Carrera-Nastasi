@@ -28,7 +28,7 @@ const ContactList = ({ contacts, searchTerm, handleSearchChange, handleChangeCha
             <img src={contact.avatar} alt={contact.name} className={styles.avatar} />
             <div className={styles.contactInfo}>
               <p className={styles.contactName}>{contact.name}</p>
-              <p className={styles.contactMessage}>{contact.lastMessage}</p>
+              <p className={styles.contactMessage}>{contact.description}</p>
             </div>
           </div>
         </button>

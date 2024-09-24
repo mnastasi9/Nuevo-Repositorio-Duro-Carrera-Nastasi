@@ -16,10 +16,10 @@ const ChatInterface = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const contacts = [
-    { id: 1, name: 'Rayo McQueen', avatar: 'imagenes/rayo.jpeg', lastMessage: 'Kuchau' },
-    { id: 2, name: 'Cenicienta', avatar: 'imagenes/cenicienta.jpg', lastMessage: 'aaaaa' },
-    { id: 3, name: 'Abi', avatar: 'imagenes/abi.jpg', lastMessage: 'pooobre looolooo' },
-    { id: 4, name: 'Shrek', avatar: 'imagenes/shrek.jpg', lastMessage: 'Los ogros son como las cebollas' }
+    { id: 1, name: 'Rayo McQueen', avatar: 'imagenes/rayo.jpeg', description: 'Kuchau' },
+    { id: 2, name: 'Cenicienta', avatar: 'imagenes/cenicienta.jpg', description: 'aaaaa' },
+    { id: 3, name: 'Abi', avatar: 'imagenes/abi.jpg', description: 'pooobre looolooo' },
+    { id: 4, name: 'Shrek', avatar: 'imagenes/shrek.jpg', description: 'Los ogros son como las cebollas' }
   ];
 
   const handleSendMessage = () => {
