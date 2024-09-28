@@ -6,7 +6,7 @@ const ContactList = ({ contacts, searchTerm, handleSearchChange, handleChangeCha
   const filteredContacts = contacts.filter(contact =>
     contact.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
 
   return (
     <div className={styles.sidebar}>
