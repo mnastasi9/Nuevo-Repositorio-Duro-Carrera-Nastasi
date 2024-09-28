@@ -1,27 +1,57 @@
 "use client"
 // components/ChatInterface.js
-import { useSocket } from '@/hooks/useSocket';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContactList from '../components/ContactList';
 import Chat from '../components/Chat';
 import styles from './page.module.css';
-import Button from '@/components/button';
-
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [currentChat, setCurrentChat] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [userAvatar, setUserAvatar] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [hasFetchedContacts, setHasFetchedContacts] = useState(false);
 
-  const contacts = [
-    { id: 1, name: 'Rayo McQueen', avatar: 'imagenes/rayo.jpeg', description: 'Kuchau' },
-    { id: 2, name: 'Cenicienta', avatar: 'imagenes/cenicienta.jpg', description: 'aaaaa' },
-    { id: 3, name: 'Abi', avatar: 'imagenes/abi.jpg', description: 'pooobre looolooo' },
-    { id: 4, name: 'Shrek', avatar: 'imagenes/shrek.jpg', description: 'Los ogros son como las cebollas' }
-  ];
+  // Hook para obtener el avatar del usuario desde la URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const UsuarioAvatar = params.get("avatar");
+    if (UsuarioAvatar !== userAvatar) {
+      setUserAvatar(UsuarioAvatar);
+    }
+  }, [userAvatar]);
 
+  // Hook para obtener la lista de contactos
+  useEffect(() => {
+    if (!hasFetchedContacts) {
+      const crearContacts = async () => {
+        try {
+          const response = await fetch('http://localhost:4000/obtenerUsers');
+          if (!response.ok) throw new Error('Error en la respuesta de la API');
+          const result = await response.json();
+          setContacts(result);
+          setHasFetchedContacts(true);
+        } catch (error) {
+          console.error('Error al obtener contactos:', error);
+        }
+      };
+      crearContacts();
+    }
+  }, [hasFetchedContacts]);
+
+  // Hook para filtrar contactos coincidentes con el avatar del usuario
+  useEffect(() => {
+    if (userAvatar) {
+      const filteredContacts = contacts.filter(contact => contact.avatar !== userAvatar);
+      if (filteredContacts.length !== contacts.length) {
+        setContacts(filteredContacts);
+      }
+    }
+  }, [userAvatar, contacts]);
+
+  // Manejar el envío de mensajes
   const handleSendMessage = () => {
     if (inputValue.trim() !== '' && currentChat) {
       const newMessage = {
@@ -36,17 +66,20 @@ const ChatInterface = () => {
     }
   };
 
+  // Manejar la pulsación de la tecla Enter
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSendMessage();
     }
   };
 
+  // Cambiar de chat
   const handleChangeChat = (contact) => {
     setCurrentChat(contact);
     setInputValue('');
   };
 
+  // Manejar cambios en la búsqueda
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -58,6 +91,7 @@ const ChatInterface = () => {
         searchTerm={searchTerm}
         handleSearchChange={handleSearchChange}
         handleChangeChat={handleChangeChat}
+        avatarUsuario={userAvatar} 
       />
       <Chat
         currentChat={currentChat}
