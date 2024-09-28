@@ -28,7 +28,7 @@ const ChatInterface = () => {
     if (!hasFetchedContacts) {
       const crearContacts = async () => {
         try {
-          const response = await fetch('http://localhost:4000/obtenerUsers');
+          const response = await fetch('http://localhost:3000/obtenerUsers');
           if (!response.ok) throw new Error('Error en la respuesta de la API');
           const result = await response.json();
           setContacts(result);
