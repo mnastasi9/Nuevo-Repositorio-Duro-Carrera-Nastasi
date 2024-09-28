@@ -1,0 +1,10 @@
+.inputlogin {
+    border: 2px solid #d8d7d3; 
+    padding: 10px; 
+    margin: 5px; 
+    border-radius: 30px; 
+    font-size: 16px; 
+    transition: border-color 0.3s;
+    width: 300px;
+    height: 35px;
+}

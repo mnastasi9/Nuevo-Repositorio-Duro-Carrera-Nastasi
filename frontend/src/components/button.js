@@ -1,5 +1,5 @@
 "use client"
-import styles from "./button.module.css"
+import styles from "./Button.module.css"
 import clsx from "clsx";
 
 export default function Button(props) {
@@ -9,9 +9,9 @@ export default function Button(props) {
         clsx(
           {
             [styles.button]: true,
-            [styles.variant_primary]: props.variant == "primary",
-            [styles.variant_secundary]: props.variant == "secundary",
-            [styles.variant_ok]: props.variant == "ok"
+            [styles.variant_jugar]: props.variant == "jugar",
+            [styles.variant_puntuacion]: props.variant == "puntuacion",
+            [styles.variant_salir]: props.variant == "salir"
           }
         )}  
         onClick={props.onClick}>{props.text}</button>
