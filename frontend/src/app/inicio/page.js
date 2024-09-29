@@ -50,12 +50,7 @@ export default function inicio() {
 
   return (
     <div className={styles.todo}>
-      <img src="../imagenes/items.png" className={styles.imagenItems} />
       <div className={styles.inicio}>
-        <img
-          src="../imagenes/imagen_inicio.jpg"
-          className={styles.imagenInicio}
-        />
         <br></br>
         <p className={styles.texto}>Nombre de usuario</p>
         <Form handleChange={(e) => setInputNombre(e.target.value)} />
@@ -64,7 +59,7 @@ export default function inicio() {
         <Form handleChange={(e) => setInputPassword(e.target.value)} />
         <br></br>
         <Button
-          text="JUGAR"
+          text="Ingresar"
           variant="jugar"
           className={styles.buttonJugar}
           onClick={ingresarUsuario}
