@@ -1,15 +1,14 @@
-// components/Chat.js
 import React from 'react';
 import OwnMessage from './OwnMessage';
 import ContactMessage from './ContactMessage';
 import styles from '../app/page.module.css';
 
-const Chat = ({ currentChat, messages, inputValue, setInputValue, handleSendMessage, handleKeyPress }) => {
-  console.log(messages)
-    //.menssage.userRecibe
-  console.log(currentChat?.id)
-  const filteredMessages = messages.filter(msg => msg.message ? msg.message.userRecibe : undefined === currentChat?.id);
-  console.log(filteredMessages)
+const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handleSendMessage, handleKeyPress }) => {
+
+  const filteredMessages = messages.filter(msg => 
+    (Number(msg.userId) === Number(currentChat?.id) && Number(msg.userRecibe) === Number(idUser)) || 
+    (Number(msg.userRecibe) === Number(currentChat?.id) && Number(msg.userId) === Number(idUser))
+  );
 
   return (
     <div className={styles.chatWindow}>
@@ -24,10 +23,10 @@ const Chat = ({ currentChat, messages, inputValue, setInputValue, handleSendMess
           </div>
           
           <div className={styles.chatBody}>
-            {filteredMessages.map((message, index) => (
-              message.sender === 'user' ? 
-                <OwnMessage key={index} message={message} /> : 
-                <ContactMessage key={index} message={message} />
+            {filteredMessages.map((msg, index) => (
+              Number(msg.userId) === Number(idUser) ? 
+                <OwnMessage key={index} message={msg} /> : 
+                <ContactMessage key={index} message={msg} />
             ))}
           </div>
 
@@ -44,9 +43,6 @@ const Chat = ({ currentChat, messages, inputValue, setInputValue, handleSendMess
         </>
       ) : (
         <img src="imagenes/logo.compu.png" className={styles.inicio} />
-        // <div className={styles.chatPlaceholder}>
-        //   <img src="imagenes/logo.compu.png" className={styles.inicio} />
-        // </div>
       )}
     </div>
   );

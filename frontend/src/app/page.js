@@ -1,4 +1,4 @@
-"use client"
+"use client"; 
 import { useEffect, useState } from 'react';
 import ContactList from '../components/ContactList';
 import Chat from '../components/Chat';
@@ -13,36 +13,34 @@ const ChatInterface = () => {
   const [userAvatar, setUserAvatar] = useState(null);
   const [userId, setUserId] = useState(null);
   const [contacts, setContacts] = useState([]);
-  const [contactsFiltrado, setContactsFiltrado] = useState([]); 
+  const [contactsFiltrado, setContactsFiltrado] = useState([]);
   const [chatUsers, setChatUsers] = useState([]);
   const [hasFetchedContacts, setHasFetchedContacts] = useState(false);
   const [hasFetchedChatUsers, setHasFetchedChatUsers] = useState(false);
   const [hasFetchedChats, setHasFetchedChats] = useState(false);
   const [codigosConexion, setCodigosConexion] = useState([]);
-  const [ConexionContacto, setConexionnContacto] = useState([])
-  const {socket, isConnected} = useSocket();
+  const [ConexionContacto, setConexionnContacto] = useState([]);
+  const { socket, isConnected } = useSocket();
 
-
-  useEffect(() => {
+  useEffect( () => {
     if (!socket) return;
-    console.log("Socket en useEffect:", socket);
-    console.log("Estado de la conexión:", isConnected);
-    socket.on("newMessage", (mensaje) =>{
-      let mensajeTemp = messages;
-      mensajeTemp.push(mensaje);
-      setMessages(mensajeTemp);
-      console.log("mensajes", messages)
-   })
+
+    socket.on("newMessage", (mensaje) => {
+      guardarMensaje(mensaje, userId);
+    });
+
+    return () => {
+      socket.off("newMessage");
+    };
   }, [socket, isConnected]);
-  
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const UsuarioAvatar = params.get("avatar");
-    const UsuarioId = params.get("idUsuario")
+    const UsuarioId = params.get("idUsuario");
     if (UsuarioAvatar !== userAvatar && UsuarioId !== userId) {
       setUserAvatar(UsuarioAvatar);
-      setUserId(UsuarioId)
+      setUserId(UsuarioId);
     }
   }, [userAvatar, userId]);
 
@@ -63,7 +61,6 @@ const ChatInterface = () => {
     }
   }, [hasFetchedContacts]);
 
-
   useEffect(() => {
     if (!hasFetchedChatUsers) {
       const traerChatsUsers = async () => {
@@ -80,7 +77,6 @@ const ChatInterface = () => {
           });
           if (!response.ok) throw new Error('Error en la respuesta de la API');
           const result = await response.json();
-          console.log(result)
           setChatUsers(result);
           setHasFetchedChatUsers(true);
         } catch (error) {
@@ -107,7 +103,6 @@ const ChatInterface = () => {
           });
           if (!response.ok) throw new Error('Error en la respuesta de la API');
           const result = await response.json();
-          console.log(result)
           setCodigosConexion(result);
           setHasFetchedChats(true);
         } catch (error) {
@@ -120,53 +115,56 @@ const ChatInterface = () => {
 
   useEffect(() => {
     if (contacts.length > 0 && chatUsers.length > 0) {
-      const filteredContacts = contacts.filter(contact => 
+      const filteredContacts = contacts.filter(contact =>
         chatUsers.some(chatUser => chatUser.id_users === contact.id)
       );
-      setContactsFiltrado(filteredContacts); 
-      console.log(filteredContacts);
+      setContactsFiltrado(filteredContacts);
     }
   }, [contacts, chatUsers]);
 
   useEffect(() => {
     if (chatUsers.length > 0 && codigosConexion.length > 0) {
-      const conexion = []
+      const conexion = [];
       for (let index = 0; index < chatUsers.length; index++) {
         for (let index2 = 0; index2 < codigosConexion.length; index2++) {
-          if (chatUsers[index].id_chat==codigosConexion[index2].id) {
-            conexion.push({id_usuario: chatUsers[index].id_users, codigo_conexion: codigosConexion[index2].c_conexion})
+          if (chatUsers[index].id_chat === codigosConexion[index2].id) {
+            conexion.push({ id_usuario: chatUsers[index].id_users, codigo_conexion: codigosConexion[index2].c_conexion });
           }
         }
       }
-      setConexionnContacto(conexion)
-      console.log(ConexionContacto)
+      setConexionnContacto(conexion);
     }
   }, [codigosConexion, chatUsers]);
 
   useEffect(() => {
-    if(!socket) return;
+    if (!socket) return;
 
-    socket.on("pingAll", (data) =>{
-        console.log("Mensaje recibido: ", data);
-    })
+    socket.on("pingAll", (data) => {
+    });
 
-    socket.on("newMessage", (data) =>{
-        console.log("Mensaje recibido de la sala: ", data);
-    })
-}, [socket, isConnected]);
+    socket.on("newMessage", (data) => {
+    });
+  }, [socket, isConnected]);
 
   function conectarSala(codigo) {
-      console.log(codigo)
-      console.log("Socket conectado:", isConnected);
-      if(isConnected) {
-          console.log("Hola")
-          socket.emit('joinRoom', {room: codigo});
-      }
+    if (isConnected) {
+      socket.emit('joinRoom', { room: codigo });
+      cargarMensajes(); 
+    }
   }
 
+  const cargarMensajes = async () => {
+    try {
+      const response = await fetch(`http://localhost:4000/obtenerMensajes`);
+      if (!response.ok) throw new Error('Error al cargar mensajes');
+      const result = await response.json();
+      setMessages(result); 
+    } catch (error) {
+      console.error('Error al cargar mensajes:', error);
+    }
+  };
 
-  const handleSendMessage = () => {
-    console.log("Imprimo state demensaje", messages)
+  const handleSendMessage = async () => {
     if (inputValue.trim() !== '' && currentChat) {
       const newMessage = {
         text: inputValue,
@@ -175,12 +173,35 @@ const ChatInterface = () => {
         seen: false,
         contactId: currentChat.id
       };
-      console.log("current", currentChat.id)
-      socket.emit('sendMessage', {mensaje: inputValue, userId: userId, userRecibe: currentChat.id})
-      setMessages([...messages, newMessage]);
-      console.log("mensajes en enviar", messages)
+      socket.emit('sendMessage', { mensaje: inputValue, userId: userId, userRecibe: currentChat.id });
+
+      await guardarMensaje(inputValue, currentChat.id);
+
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
       setInputValue('');
     }
+  };
+
+  const guardarMensaje = async (mensaje, userRecibe) => {
+    try {
+      const data = {
+        userId: userId,
+        mensaje: mensaje,
+        userRecibe: userRecibe
+      };
+      const response = await fetch('http://localhost:4000/insertarMensaje', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Error al guardar el mensaje');
+      const result = await response.json();
+    } catch (error) {
+      console.error('Error al guardar el mensaje:', error);
+    }
+    await cargarMensajes()
   };
 
   const handleKeyPress = (e) => {
@@ -190,32 +211,22 @@ const ChatInterface = () => {
   };
 
   const handleChangeChat = (contact) => {
-    console.log("hola");
-    console.log("Contacto:", contact);
-    console.log("ConexionContacto:", ConexionContacto);
-    
-    
     let conectado = false;
     for (let index = 0; index < ConexionContacto.length; index++) {
-        console.log("chau");
-        if (contact.id == ConexionContacto[index].id_usuario) {
-          if(!isConnected) {
-            console.log("desconectar")
-            setMessages([])
-            socket.on(`disconnect`, "se desconecto")
-
-          }
-            conectarSala(ConexionContacto[index].codigo_conexion)
-            conectado = true;
+      if (contact.id === ConexionContacto[index].id_usuario) {
+        if (!isConnected) {
+          setMessages([]);
         }
+        conectarSala(ConexionContacto[index].codigo_conexion);
+        conectado = true;
+      }
     }
-    
-    if (conectado) {
-        setCurrentChat(contact);
-        setInputValue('');
-    }
-};
 
+    if (conectado) {
+      setCurrentChat(contact);
+      setInputValue('');
+    }
+  };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -232,7 +243,8 @@ const ChatInterface = () => {
       />
       <Chat
         currentChat={currentChat}
-        messages={messages}
+        messages={messages} 
+        idUser={userId}
         inputValue={inputValue}
         setInputValue={setInputValue}
         handleSendMessage={handleSendMessage}
