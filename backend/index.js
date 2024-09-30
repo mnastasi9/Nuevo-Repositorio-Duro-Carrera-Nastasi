@@ -91,6 +91,17 @@ app.post('/insertarUsuario', async function (req, res) {
     }
 })
 
+app.post('/insertarMensaje', async function (req, res) {
+    await MySql.realizarQuery(`INSERT INTO Mensajes (userId, mensaje, userRecibe) 
+    VALUES (${req.body.userId}, '${req.body.mensaje}', ${req.body.userRecibe})`);
+    res.send({ status: "Ok" })
+})
+
+app.get('/obtenerMensajes', async function (req, res) {
+    const respuesta = await MySql.realizarQuery('SELECT * FROM Mensajes;')
+    res.send(respuesta)
+})
+
 app.delete('/eliminarUsuario', async function (req, res) {
     await MySql.realizarQuery(`DELETE FROM Users WHERE id = ${req.body.id_usuario}`);
     res.send("ok")

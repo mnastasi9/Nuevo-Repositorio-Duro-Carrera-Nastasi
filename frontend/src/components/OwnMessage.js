@@ -1,16 +1,16 @@
-// components/OwnMessage.js
+"use client"
 import React from 'react';
 import styles from '../app/page.module.css';
 
 const OwnMessage = ({ message }) => {
-  console.log("mensaje recibido del own", message)
+  const mensaje = message.mensaje;
   return (
     <div className={styles.sentMessageContainer}>
       <p className={styles.sentMessage}>
-        {message.text}
+        {mensaje}
       </p>
       <span className={styles.messageInfo}>
-        {message.time}
+        {message.time || 'Sin hora'}
         {message.seen ? '✔✔' : '✔'}
       </span>
     </div>
@@ -18,3 +18,4 @@ const OwnMessage = ({ message }) => {
 };
 
 export default OwnMessage;
+

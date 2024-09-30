@@ -1,4 +1,4 @@
-// components/ContactList.js
+"use client"
 import React, { useEffect } from 'react';
 import styles from '../app/page.module.css';
 
@@ -24,7 +24,7 @@ const ContactList = ({ contacts, searchTerm, handleSearchChange, handleChangeCha
         />
       </div>
       {filteredContacts.map(contact => (
-        <button key={contact.id} onClick={() => handleChangeChat(contact)} className={styles.button}>
+        <button key={contact.id} onClick={() => handleChangeChat(contact)} className={styles.button} >
           <div className={styles.contact}>
             <img src={contact.avatar} alt={contact.nombre} className={styles.avatar} />
             <div className={styles.contactInfo}>
