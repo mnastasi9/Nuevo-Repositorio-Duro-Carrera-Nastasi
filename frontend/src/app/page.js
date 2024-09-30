@@ -23,11 +23,16 @@ const ChatInterface = () => {
   const {socket, isConnected} = useSocket();
 
 
-
   useEffect(() => {
     if (!socket) return;
     console.log("Socket en useEffect:", socket);
     console.log("Estado de la conexión:", isConnected);
+    socket.on("newMessage", (mensaje) =>{
+      let mensajeTemp = messages;
+      mensajeTemp.push(mensaje);
+      setMessages(mensajeTemp);
+      console.log("mensajes", messages)
+   })
   }, [socket, isConnected]);
   
 
@@ -161,6 +166,7 @@ const ChatInterface = () => {
 
 
   const handleSendMessage = () => {
+    console.log("Imprimo state demensaje", messages)
     if (inputValue.trim() !== '' && currentChat) {
       const newMessage = {
         text: inputValue,
@@ -169,9 +175,10 @@ const ChatInterface = () => {
         seen: false,
         contactId: currentChat.id
       };
-      socket.emit(`enviarMensaje`, {mensaje: inputValue})
-      console.log(`el mensaje: ${inputValue}`)
+      console.log("current", currentChat.id)
+      socket.emit('sendMessage', {mensaje: inputValue, userId: userId, userRecibe: currentChat.id})
       setMessages([...messages, newMessage]);
+      console.log("mensajes en enviar", messages)
       setInputValue('');
     }
   };
@@ -192,6 +199,12 @@ const ChatInterface = () => {
     for (let index = 0; index < ConexionContacto.length; index++) {
         console.log("chau");
         if (contact.id == ConexionContacto[index].id_usuario) {
+          if(!isConnected) {
+            console.log("desconectar")
+            setMessages([])
+            socket.on(`disconnect`, "se desconecto")
+
+          }
             conectarSala(ConexionContacto[index].codigo_conexion)
             conectado = true;
         }

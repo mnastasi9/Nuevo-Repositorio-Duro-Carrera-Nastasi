@@ -3,6 +3,7 @@ import React from 'react';
 import styles from '../app/page.module.css';
 
 const OwnMessage = ({ message }) => {
+  console.log("mensaje recibido del own", message)
   return (
     <div className={styles.sentMessageContainer}>
       <p className={styles.sentMessage}>

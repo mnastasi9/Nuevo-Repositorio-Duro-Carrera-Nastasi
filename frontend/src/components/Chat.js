@@ -5,7 +5,11 @@ import ContactMessage from './ContactMessage';
 import styles from '../app/page.module.css';
 
 const Chat = ({ currentChat, messages, inputValue, setInputValue, handleSendMessage, handleKeyPress }) => {
-  const filteredMessages = messages.filter(message => message.contactId === currentChat?.id);
+  console.log(messages)
+    //.menssage.userRecibe
+  console.log(currentChat?.id)
+  const filteredMessages = messages.filter(msg => msg.message ? msg.message.userRecibe : undefined === currentChat?.id);
+  console.log(filteredMessages)
 
   return (
     <div className={styles.chatWindow}>
@@ -18,7 +22,7 @@ const Chat = ({ currentChat, messages, inputValue, setInputValue, handleSendMess
             </div>
             <button><img src="imagenes/3puntitos.png" className={styles.enviar} /></button>
           </div>
-
+          
           <div className={styles.chatBody}>
             {filteredMessages.map((message, index) => (
               message.sender === 'user' ? 

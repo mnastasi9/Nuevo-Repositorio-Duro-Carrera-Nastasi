@@ -201,6 +201,11 @@ io.on("connection", (socket) => {
         console.log("Disconnect");
     })
 
+    socket.on('leaveRoom', () => {
+        socket.leave(req.session.room);
+        console.log("Disconnect");
+    })
+
     socket.on(`enviarMensaje`, () => {
         io.to(req.session.room).emit('newMessage', { room: req.session.room, message: data });
     })    
@@ -221,7 +226,7 @@ io.on("connection", (socket) => {
 
 function existeSala(room) {
     for (let index = 0; index < codigos.length; index++) {
-        if (data.room == codigos[index]) {
+        if (room == codigos[index]) {
             return true
         }
     }
