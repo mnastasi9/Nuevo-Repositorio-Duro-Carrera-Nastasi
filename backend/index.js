@@ -1,15 +1,14 @@
-// Carga las librerías necesarias
 const express = require('express');
 const bodyParser = require('body-parser');
 const MySql = require('./modulos/mysql');
 const session = require('express-session');
-const cors = require('cors'); // Agrega esta línea
+const cors = require('cors'); 
 
 const app = express();
-app.use(cors({ // Configura CORS
-    origin: ["http://localhost:3000", "http://localhost:3001"], // Orígenes permitidos
-    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
-    credentials: true // Habilitar el envío de cookies
+app.use(cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    credentials: true 
 }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,7 +29,6 @@ const io = require('socket.io')(server, {
 });
 
 const sessionMiddleware = session({
-    //Elegir tu propia key secreta
     secret: "supersarasa",
     resave: false,
     saveUninitialized: false
@@ -43,12 +41,6 @@ io.use((socket, next) => {
 });
 
 
-/**
- * req = request. en este objeto voy a tener todo lo que reciba del cliente
- * res = response. Voy a responderle al cliente
- */
-
-//parte usuario
 app.get('/obtenerUsers', async function (req, res) {
     const respuesta = await MySql.realizarQuery('SELECT * FROM Users;')
     res.send(respuesta)
@@ -108,7 +100,6 @@ app.delete('/eliminarUsuario', async function (req, res) {
 })
 
 
-//parte chat_users
 
 app.post('/Chat_Users', async function (req, res) {
     let respuesta = ""
@@ -157,7 +148,6 @@ app.post('/codigoConexion', async function (req, res) {
     res.send(respuesta);
 });
 
-//parte chat
 app.get('/obtenerChat', async function (req, res) {
     const respuesta = await MySql.realizarQuery('SELECT * FROM Chat;')
     res.send(respuesta)
@@ -221,17 +211,6 @@ io.on("connection", (socket) => {
         io.to(req.session.room).emit('newMessage', { room: req.session.room, message: data });
     })    
 
-    // socket.on(`conectarSala`, data => {
-    //     console.log(data)
-    //     if (data.hasOwnProperty(`room`)) {
-    //         codigos.push(data.room)
-    //     }
-    //     //MySql.realizarQuery()
-    //     if (req.session.room != undefined && req.session.room.length > 0)
-    //         socket.leave(req.session.room);
-        
-    // })
-
 });
 
 
@@ -245,33 +224,3 @@ function existeSala(room) {
 }
 
 const codigos = []
-/*app.put('/modificarChat_Users', async function(req,res){
-    console.log(req.body)
-    await MySql.realizarQuery(`UPDATE Chat_Users SET puntaje_partida = '${req.body.puntaje_partida}' WHERE id_partida= ${req.body.id_partida}`);
-    res.send("ok")
-})
-app.put('/modificarUsuarioPuntaje', async function(req,res){
-    console.log(req.body)
-    response = await MySql.realizarQuery(`SELECT puntaje_usuario FROM Usuarios WHERE id_usuario= ${req.body.id_usuario}`);
-    await MySql.realizarQuery(`UPDATE Usuarios SET puntaje_usuario = '${req.body.puntaje_usuario + response[0].puntaje_usuario}' WHERE id_usuario= ${req.body.id_usuario}`);
-    res.send({puntaje: req.body.puntaje_usuario + response[0].puntaje_usuario})
-})
-app.put('/modificarUsuarioPartidasganadas', async function(req,res){
-    console.log(req.body)
-    response = await MySql.realizarQuery(`SELECT partidas_ganadas FROM Usuarios WHERE id_usuario= ${req.body.id_usuario}`);
-    await MySql.realizarQuery(`UPDATE Usuarios SET partidas_ganadas = '${req.body.partidas_ganadas + response[0].partidas_ganadas}' WHERE id_usuario= ${req.body.id_usuario}`);
-    res.send({ganadas: req.body.partidas_ganadas + response[0].partidas_ganadas})
-})
-
-app.put('/modificarUsuarioPartidasperdidas', async function(req,res){
-    console.log(req.body)
-    response = await MySql.realizarQuery(`SELECT partidas_perdidas FROM Usuarios WHERE id_usuario= ${req.body.id_usuario}`);
-    await MySql.realizarQuery(`UPDATE Usuarios SET partidas_perdidas = '${req.body.partidas_perdidas + response[0].partidas_perdidas}' WHERE id_usuario= ${req.body.id_usuario}`);
-    res.send({perdidas: req.body.partidas_perdidas + response[0].partidas_perdidas})
-})
-
-app.delete('/eliminarPartida', async function(req,res){
-    console.log(req.body)
-    await MySql.realizarQuery(`DELETE FROM Partidas WHERE id_partida = ${req.body.id_partida}`);
-    res.send("ok")
-})*/
