@@ -90,27 +90,55 @@ app.delete('/eliminarUsuario', async function(req,res){
 
 
 //parte chat_users
-app.get('/obtenerChat_Users', async function(req,res){
-    console.log(req.query) 
-    const respuesta = await MySql.realizarQuery('SELECT * FROM Chat_Users;')
-    console.log({respuesta})
-    res.send(respuesta)
-})
 
-
-app.post('/Chat_Users', async function(req,res){
+app.post('/Chat_Users', async function(req, res) {
     console.log(req.body)
     let respuesta = ""
+    
     if (req.body.id_usuario) {
-         respuesta = await MySql.realizarQuery(`SELECT * FROM Chat_Users WHERE 
-        id_users = "${req.query.id_usuario}";`)
-    } 
-    else{
-         respuesta = await MySql.realizarQuery(`SELECT * FROM Chat_Users;`)
+        let idChatsUsuario = await MySql.realizarQuery(`
+            SELECT id_chat FROM Chat_Users WHERE id_users = "${req.body.id_usuario}";
+        `);
+        let idsChatArray = idChatsUsuario.map(chat => chat.id_chat);
+        if (idsChatArray.length > 0) {
+            respuesta = await MySql.realizarQuery(`
+                SELECT * FROM Chat_Users 
+                WHERE id_chat IN (${idsChatArray.join(",")})
+                AND id_users != "${req.body.id_usuario}";
+            `);
+        } else {
+            respuesta = [];
+        }
+    } else {
+        respuesta = [];
     }
-    res.send(respuesta) 
-   
-})
+
+    res.send(respuesta);
+});
+
+app.post('/codigoConexion', async function(req, res) {
+    console.log(req.body)
+    let respuesta = ""
+    
+    if (req.body.id_usuario) {
+        let idChatsUsuario = await MySql.realizarQuery(`
+            SELECT id_chat FROM Chat_Users WHERE id_users = "${req.body.id_usuario}";
+        `);
+        let idsChatArray = idChatsUsuario.map(chat => chat.id_chat);
+        if (idsChatArray.length > 0) {
+            respuesta = await MySql.realizarQuery(`
+                SELECT * FROM Chat 
+                WHERE id IN (${idsChatArray.join(",")});
+            `);
+        } else {
+            respuesta = [];
+        }
+    } else {
+        respuesta = [];
+    }
+
+    res.send(respuesta);
+});
 
 //parte chat
 app.get('/obtenerChat', async function(req,res){

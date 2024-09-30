@@ -10,12 +10,15 @@ export default function inicio() {
   const [inputNombre, setInputNombre] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
+  const [userID, setUserID] = useState(0)
 
   async function ingresarUsuario() {
-    const avatarUsuario = await existeUsuario();
-    if (avatarUsuario) {
-      alert("Haz ingresado");
-      router.push(`/?avatar=${avatarUsuario}`);
+    const usuario = await existeUsuario(); // Esto retorna { userAv, userId }
+  
+    if (usuario) {
+      const { userAv, userId } = usuario; // Destructuramos el objeto para obtener los valores
+      alert("Has ingresado");
+      router.push(`/?avatar=${userAv}&idUsuario=${userId}`); // Usamos ambos en la URL
     } else {
       alert("El usuario no existe o la contraseña no es correcta");
     }
@@ -42,9 +45,11 @@ export default function inicio() {
     } else {
       console.log("El usuario sí existe");
       const userAv = result[0].avatar;
+      const userId = result[0].id
       console.log(result)
       setUserAvatar(userAv); 
-      return userAv; 
+      setUserID(userId)
+      return { userAv, userId } ; 
     }
   }
 
