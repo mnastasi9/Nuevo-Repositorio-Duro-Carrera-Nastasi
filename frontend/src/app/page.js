@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ContactList from '../components/ContactList';
 import Chat from '../components/Chat';
 import styles from './page.module.css';
+import { useSocket } from "@/hooks/useSocket";
 
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
@@ -19,6 +20,16 @@ const ChatInterface = () => {
   const [hasFetchedChats, setHasFetchedChats] = useState(false);
   const [codigosConexion, setCodigosConexion] = useState([]);
   const [ConexionContacto, setConexionnContacto] = useState([])
+  const {socket, isConnected} = useSocket();
+
+
+
+  useEffect(() => {
+    if (!socket) return;
+    console.log("Socket en useEffect:", socket);
+    console.log("Estado de la conexión:", isConnected);
+  }, [socket, isConnected]);
+  
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -34,7 +45,7 @@ const ChatInterface = () => {
     if (!hasFetchedContacts) {
       const traerContactos = async () => {
         try {
-          const response = await fetch('http://localhost:3000/obtenerUsers');
+          const response = await fetch('http://localhost:4000/obtenerUsers');
           if (!response.ok) throw new Error('Error en la respuesta de la API');
           const result = await response.json();
           setContacts(result);
@@ -55,7 +66,7 @@ const ChatInterface = () => {
           const data = {
             id_usuario: userId
           };
-          const response = await fetch('http://localhost:3000/Chat_Users', {
+          const response = await fetch('http://localhost:4000/Chat_Users', {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -82,7 +93,7 @@ const ChatInterface = () => {
           const data = {
             id_usuario: userId
           };
-          const response = await fetch('http://localhost:3000/codigoConexion', {
+          const response = await fetch('http://localhost:4000/codigoConexion', {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -127,6 +138,28 @@ const ChatInterface = () => {
     }
   }, [codigosConexion, chatUsers]);
 
+  useEffect(() => {
+    if(!socket) return;
+
+    socket.on("pingAll", (data) =>{
+        console.log("Mensaje recibido: ", data);
+    })
+
+    socket.on("newMessage", (data) =>{
+        console.log("Mensaje recibido de la sala: ", data);
+    })
+}, [socket, isConnected]);
+
+  function conectarSala(codigo) {
+      console.log(codigo)
+      console.log("Socket conectado:", isConnected);
+      if(isConnected) {
+          console.log("Hola")
+          socket.emit('crearSala', {room: codigo});
+      }
+  }
+
+
   const handleSendMessage = () => {
     if (inputValue.trim() !== '' && currentChat) {
       const newMessage = {
@@ -156,8 +189,7 @@ const ChatInterface = () => {
     for (let index = 0; index < ConexionContacto.length; index++) {
         console.log("chau");
         if (contact.id == ConexionContacto[index].id_usuario) {
-            console.log("conectado");
-            // socket.emit('joinRoom', {room: [ConexionContacto[index].codigo_conexion]})
+            conectarSala(ConexionContacto[index].codigo_conexion)
             conectado = true;
         }
     }
