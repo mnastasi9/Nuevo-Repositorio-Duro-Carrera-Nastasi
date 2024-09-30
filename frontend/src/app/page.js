@@ -155,7 +155,7 @@ const ChatInterface = () => {
       console.log("Socket conectado:", isConnected);
       if(isConnected) {
           console.log("Hola")
-          socket.emit('crearSala', {room: codigo});
+          socket.emit('joinRoom', {room: codigo});
       }
   }
 
@@ -169,6 +169,8 @@ const ChatInterface = () => {
         seen: false,
         contactId: currentChat.id
       };
+      socket.emit(`enviarMensaje`, {mensaje: inputValue})
+      console.log(`el mensaje: ${inputValue}`)
       setMessages([...messages, newMessage]);
       setInputValue('');
     }
@@ -184,6 +186,7 @@ const ChatInterface = () => {
     console.log("hola");
     console.log("Contacto:", contact);
     console.log("ConexionContacto:", ConexionContacto);
+    
     
     let conectado = false;
     for (let index = 0; index < ConexionContacto.length; index++) {
