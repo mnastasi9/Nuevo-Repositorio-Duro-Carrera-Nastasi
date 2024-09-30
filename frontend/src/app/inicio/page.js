@@ -10,12 +10,15 @@ export default function inicio() {
   const [inputNombre, setInputNombre] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
+  const [userID, setUserID] = useState(0)
 
   async function ingresarUsuario() {
-    const avatarUsuario = await existeUsuario();
-    if (avatarUsuario) {
-      alert("Haz ingresado");
-      router.push(`/?avatar=${avatarUsuario}`);
+    const usuario = await existeUsuario(); // Esto retorna { userAv, userId }
+  
+    if (usuario) {
+      const { userAv, userId } = usuario; // Destructuramos el objeto para obtener los valores
+      alert("Has ingresado");
+      router.push(`/?avatar=${userAv}&idUsuario=${userId}`); // Usamos ambos en la URL
     } else {
       alert("El usuario no existe o la contraseña no es correcta");
     }
@@ -42,20 +45,17 @@ export default function inicio() {
     } else {
       console.log("El usuario sí existe");
       const userAv = result[0].avatar;
+      const userId = result[0].id
       console.log(result)
       setUserAvatar(userAv); 
-      return userAv; 
+      setUserID(userId)
+      return { userAv, userId } ; 
     }
   }
 
   return (
     <div className={styles.todo}>
-      <img src="../imagenes/items.png" className={styles.imagenItems} />
       <div className={styles.inicio}>
-        <img
-          src="../imagenes/imagen_inicio.jpg"
-          className={styles.imagenInicio}
-        />
         <br></br>
         <p className={styles.texto}>Nombre de usuario</p>
         <Form handleChange={(e) => setInputNombre(e.target.value)} />
@@ -64,7 +64,7 @@ export default function inicio() {
         <Form handleChange={(e) => setInputPassword(e.target.value)} />
         <br></br>
         <Button
-          text="JUGAR"
+          text="ENTRAR"
           variant="jugar"
           className={styles.buttonJugar}
           onClick={ingresarUsuario}
