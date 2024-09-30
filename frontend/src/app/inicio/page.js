@@ -64,7 +64,7 @@ export default function inicio() {
         <Form handleChange={(e) => setInputPassword(e.target.value)} />
         <br></br>
         <Button
-          text="ENTRAR"
+          text="Ingresar"
           variant="jugar"
           className={styles.buttonJugar}
           onClick={ingresarUsuario}

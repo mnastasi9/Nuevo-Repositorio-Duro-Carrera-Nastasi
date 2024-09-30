@@ -140,6 +140,30 @@ app.post('/codigoConexion', async function(req, res) {
     res.send(respuesta);
 });
 
+//parte chat
+app.get('/obtenerChat', async function(req,res){
+    console.log(req.query) 
+    const respuesta = await MySql.realizarQuery('SELECT * FROM Chat;')
+    console.log({respuesta})
+    res.send(respuesta)
+})
+
+
+app.post('/Chat', async function(req,res){
+    console.log(req.body)
+    let respuesta = ""
+    if (req.body.id_usuario) {
+         respuesta = await MySql.realizarQuery(`SELECT * FROM Chat WHERE 
+        id = "${req.query.id_usuario}";`)
+    } 
+    else{
+         respuesta = await MySql.realizarQuery(`SELECT * FROM Chat;`)
+    }
+    res.send(respuesta) 
+   
+})
+
+
 /*app.put('/modificarChat_Users', async function(req,res){
     console.log(req.body)
     await MySql.realizarQuery(`UPDATE Chat_Users SET puntaje_partida = '${req.body.puntaje_partida}' WHERE id_partida= ${req.body.id_partida}`);
