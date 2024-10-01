@@ -16,14 +16,16 @@ const OwnMessage = ({ message }) => {
       <p className={styles.sentMessage}>
         {mensaje}
       </p>
-      <span className={clsx(
-        {
-          [styles.seenVisto]: si,
-          [styles.seenNoVisto]: si
-        }
-      )}>
+      <span className={styles.mensajeChat}>
         {message.time || 'Sin hora'}
-        {'✔✔' }
+        <span className={clsx(
+          { 
+            [styles.seenVisto]: si, 
+            [styles.seenNoVisto]: si
+          }
+          )}>
+          {' ✔✔'}
+        </span>
       </span>
     </div>
   );

@@ -1,16 +1,46 @@
-import React from 'react';
+"use client"
 import OwnMessage from './OwnMessage';
 import ContactMessage from './ContactMessage';
 import styles from '../app/page.module.css';
+import { useEffect} from 'react';
+
 
 const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handleSendMessage, handleKeyPress }) => {
 
+  console.log(messages)
   const filteredMessages = messages.filter(msg => 
     (Number(msg.userId) === Number(currentChat?.id) && Number(msg.userRecibe) === Number(idUser)) || 
     (Number(msg.userRecibe) === Number(currentChat?.id) && Number(msg.userId) === Number(idUser))
   );
 
+  useEffect(() => {
+    console.log("entre");
   
+    async function leerMensajes(userId, userRecibe) {
+      const data = {
+         userId : userRecibe,
+         userRecibe: userId
+      }
+  
+      const response = await fetch('http://localhost:4000/modificarSeen',{
+          method:"PUT",
+          headers: {
+              "Content-Type": "application/json",
+            },
+          body:JSON.stringify(data),
+  
+      })
+  }
+  
+    // Solo llamar a la función si currentChat y idUser están definidos
+    if (currentChat?.id && idUser) {
+      leerMensajes(idUser, currentChat?.id);
+    }
+  }, [idUser, currentChat]);
+  
+
+  
+
   return (
     <div className={styles.chatWindow}>
       {currentChat ? (
@@ -18,7 +48,7 @@ const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handle
           <div className={styles.chatHeader}>
             <div className={styles.divCabecera}>
               <img src={currentChat.avatar} alt={currentChat.name} className={styles.avatar} />
-              <p className={styles.contactName}>{currentChat.nombre}</p>
+              <h2>{currentChat.name}</h2>
             </div>
             <button><img src="imagenes/3puntitos.png" className={styles.enviar} /></button>
           </div>

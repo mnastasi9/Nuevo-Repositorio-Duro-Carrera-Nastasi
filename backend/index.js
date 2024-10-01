@@ -167,17 +167,14 @@ app.post('/Chat', async function (req, res) {
 
 })
 
-app.post('/modificarSeen', (req, res) => {
-    const { userId, userRecibe } = req.body;
 
-    const query = 'UPDATE mensajes SET seen = ? WHERE userId = ? AND userRecibe = ?';
-    connection.query(query, ['seenVisto', userId, userRecibe], (error, results) => {
-        if (error) {
-            return res.status(500).send('Error actualizando registros: ' + error);
-        }
-        res.send('Registros actualizados correctamente.');
-    });
-});
+app.put('/modificarSeen', async function(req,res){
+    console.log(req.body)
+    await MySql.realizarQuery(`UPDATE Mensajes SET seen = 'seenVisto' WHERE userId= ${req.body.userId} and userRecibe=${req.body.userRecibe}`);
+    res.send("ok")
+})
+
+
 
 io.on("connection", (socket) => {
     const req = socket.request;
