@@ -84,8 +84,8 @@ app.post('/insertarUsuario', async function (req, res) {
 })
 
 app.post('/insertarMensaje', async function (req, res) {
-    await MySql.realizarQuery(`INSERT INTO Mensajes (userId, mensaje, userRecibe) 
-    VALUES (${req.body.userId}, '${req.body.mensaje}', ${req.body.userRecibe})`);
+    await MySql.realizarQuery(`INSERT INTO Mensajes (userId, mensaje, userRecibe, time) 
+    VALUES (${req.body.userId}, '${req.body.mensaje}', ${req.body.userRecibe}, '${req.body.time}')`);
     res.send({ status: "Ok" })
 })
 
@@ -166,6 +166,18 @@ app.post('/Chat', async function (req, res) {
     res.send(respuesta)
 
 })
+
+app.post('/modificarSeen', (req, res) => {
+    const { userId, userRecibe } = req.body;
+
+    const query = 'UPDATE mensajes SET seen = ? WHERE userId = ? AND userRecibe = ?';
+    connection.query(query, ['seenVisto', userId, userRecibe], (error, results) => {
+        if (error) {
+            return res.status(500).send('Error actualizando registros: ' + error);
+        }
+        res.send('Registros actualizados correctamente.');
+    });
+});
 
 io.on("connection", (socket) => {
     const req = socket.request;

@@ -174,20 +174,21 @@ const ChatInterface = () => {
         contactId: currentChat.id
       };
       socket.emit('sendMessage', { mensaje: inputValue, userId: userId, userRecibe: currentChat.id });
-
-      await guardarMensaje(inputValue, currentChat.id);
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      await guardarMensaje(inputValue, currentChat.id, time);
 
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setInputValue('');
     }
   };
 
-  const guardarMensaje = async (mensaje, userRecibe) => {
+  const guardarMensaje = async (mensaje, userRecibe, time) => {
     try {
       const data = {
         userId: userId,
         mensaje: mensaje,
-        userRecibe: userRecibe
+        userRecibe: userRecibe,
+        time: time
       };
       const response = await fetch('http://localhost:4000/insertarMensaje', {
         method: "POST",

@@ -105,6 +105,7 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
+  align-items: center;
 }
 
 .chatBody {
@@ -139,17 +140,23 @@
 }
 
 .messageInfo {
+  
+}
+
+.seenVisto {
   font-size: 0.8em;
-  color: #666;
+  color: #0084ff;
   margin-top: 2px;
   display: flex;
   align-items: center;
 }
 
-.seenStatus {
-  margin-left: 5px;
+.seenNoViste {
   font-size: 0.8em;
-  color: #0084ff; /* Color para el visto */
+  color: #666;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
 }
 
 .chatFooter {
