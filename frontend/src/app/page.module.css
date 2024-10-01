@@ -139,24 +139,19 @@
   margin: 0;
 }
 
-.messageInfo {
-  
+.mensajeChat {
+  font-size: 0.8em;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
 }
 
 .seenVisto {
-  font-size: 0.8em;
   color: #0084ff;
-  margin-top: 2px;
-  display: flex;
-  align-items: center;
 }
 
 .seenNoViste {
-  font-size: 0.8em;
   color: #666;
-  margin-top: 2px;
-  display: flex;
-  align-items: center;
 }
 
 .chatFooter {
