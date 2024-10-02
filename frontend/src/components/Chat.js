@@ -3,10 +3,11 @@ import OwnMessage from './OwnMessage';
 import ContactMessage from './ContactMessage';
 import styles from '../app/page.module.css';
 import { useEffect} from 'react';
+import { useSocket } from "@/hooks/useSocket";
 
 
-const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handleSendMessage, handleKeyPress }) => {
-
+const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handleSendMessage, handleKeyPress, leer, vio }) => {
+  const { socket, isConnected } = useSocket();
   console.log(messages)
   const filteredMessages = messages.filter(msg => 
     (Number(msg.userId) === Number(currentChat?.id) && Number(msg.userRecibe) === Number(idUser)) || 
@@ -14,7 +15,6 @@ const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handle
   );
 
   useEffect(() => {
-    console.log("entre");
   
     async function leerMensajes(userId, userRecibe) {
       const data = {
@@ -30,6 +30,12 @@ const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handle
           body:JSON.stringify(data),
   
       })
+      const result = await response.json();
+      console.log(result)
+      if(result) {
+        leer()
+        vio=false
+      }
   }
   
     // Solo llamar a la función si currentChat y idUser están definidos
@@ -38,7 +44,10 @@ const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handle
     }
   }, [idUser, currentChat]);
   
-
+  if(vio) {
+    console.log("hola")
+    leer()
+  }
   
 
   return (

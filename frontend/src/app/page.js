@@ -21,12 +21,20 @@ const ChatInterface = () => {
   const [codigosConexion, setCodigosConexion] = useState([]);
   const [ConexionContacto, setConexionnContacto] = useState([]);
   const { socket, isConnected } = useSocket();
+  const {loVi, setLoVi} = useState(false)
 
   useEffect( () => {
     if (!socket) return;
 
     socket.on("newMessage", (mensaje) => {
       guardarMensaje(mensaje, userId);
+      setLoVi(true)
+    });
+
+    console.log("cambioSocket")
+    socket.on("nuevoVisto", (mensaje) => {
+      console.log("lo vi marche")
+      cargarMensajes();
     });
 
     return () => {
@@ -159,6 +167,7 @@ const ChatInterface = () => {
       if (!response.ok) throw new Error('Error al cargar mensajes');
       const result = await response.json();
       setMessages(result); 
+      console.log("entre", result)
     } catch (error) {
       console.error('Error al cargar mensajes:', error);
     }
@@ -181,6 +190,10 @@ const ChatInterface = () => {
       setInputValue('');
     }
   };
+
+  const leerChat = () => {
+    socket.emit("visto", {mensaje: "lo vi"})
+  }
 
   const guardarMensaje = async (mensaje, userRecibe, time) => {
     try {
@@ -227,6 +240,7 @@ const ChatInterface = () => {
       setCurrentChat(contact);
       setInputValue('');
     }
+
   };
 
   const handleSearchChange = (e) => {
@@ -250,6 +264,8 @@ const ChatInterface = () => {
         setInputValue={setInputValue}
         handleSendMessage={handleSendMessage}
         handleKeyPress={handleKeyPress}
+        leer={leerChat}
+        vio={loVi}
       />
     </div>
   );
