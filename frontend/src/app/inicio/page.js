@@ -13,12 +13,12 @@ export default function inicio() {
   const [userID, setUserID] = useState(0)
 
   async function ingresarUsuario() {
-    const usuario = await existeUsuario(); // Esto retorna { userAv, userId }
+    const usuario = await existeUsuario(); 
   
     if (usuario) {
-      const { userAv, userId } = usuario; // Destructuramos el objeto para obtener los valores
+      const { userAv, userId } = usuario; 
       alert("Has ingresado");
-      router.push(`/?avatar=${userAv}&idUsuario=${userId}`); // Usamos ambos en la URL
+      router.push(`/?avatar=${userAv}&idUsuario=${userId}`); 
     } else {
       alert("El usuario no existe o la contraseña no es correcta");
     }
