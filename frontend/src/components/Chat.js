@@ -6,7 +6,7 @@ import { useEffect} from 'react';
 import { useSocket } from "@/hooks/useSocket";
 
 
-const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handleSendMessage, handleKeyPress, leer, vio }) => {
+const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handleSendMessage, handleKeyPress, leer }) => {
   const { socket, isConnected } = useSocket();
   console.log(messages)
   const filteredMessages = messages.filter(msg => 
@@ -14,40 +14,7 @@ const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handle
     (Number(msg.userRecibe) === Number(currentChat?.id) && Number(msg.userId) === Number(idUser))
   );
 
-  useEffect(() => {
-  
-    async function leerMensajes(userId, userRecibe) {
-      const data = {
-         userId : userRecibe,
-         userRecibe: userId
-      }
-  
-      const response = await fetch('http://localhost:4000/modificarSeen',{
-          method:"PUT",
-          headers: {
-              "Content-Type": "application/json",
-            },
-          body:JSON.stringify(data),
-  
-      })
-      const result = await response.json();
-      console.log(result)
-      if(result) {
-        leer()
-        vio=false
-      }
-  }
-  
-    // Solo llamar a la función si currentChat y idUser están definidos
-    if (currentChat?.id && idUser) {
-      leerMensajes(idUser, currentChat?.id);
-    }
-  }, [idUser, currentChat]);
-  
-  if(vio) {
-    console.log("hola")
-    leer()
-  }
+
   
 
   return (
@@ -66,7 +33,7 @@ const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handle
             {filteredMessages.map((msg, index) => (
               Number(msg.userId) === Number(idUser) ? 
                 <OwnMessage key={index} message={msg} /> : 
-                <ContactMessage key={index} message={msg} />
+                <ContactMessage key={index} message={msg} leer={leer} idUser={idUser} currentChat={currentChat} />
             ))}
           </div>
 
