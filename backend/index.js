@@ -170,9 +170,17 @@ app.post('/Chat', async function (req, res) {
 
 app.put('/modificarSeen', async function(req,res){
     console.log(req.body)
-    await MySql.realizarQuery(`UPDATE Mensajes SET seen = 'seenVisto' WHERE userId= ${req.body.userId} and userRecibe=${req.body.userRecibe}`);
-    res.send("ok")
+    respuesta =  await MySql.realizarQuery(`SELECT * FROM Mensajes WHERE seen = 'seenNoVisto' and userId= ${req.body.userId} and userRecibe=${req.body.userRecibe}`)
+    if(respuesta.length>0) {
+        await MySql.realizarQuery(`UPDATE Mensajes SET seen = 'seenVisto' WHERE userId= ${req.body.userId} and userRecibe=${req.body.userRecibe}`);
+        res.send(true)
+    }
+    else {
+        res.send(false)
+    }
+    
 })
+
 
 
 
@@ -216,9 +224,10 @@ io.on("connection", (socket) => {
         console.log("Disconnect");
     })
 
-    socket.on(`enviarMensaje`, () => {
-        io.to(req.session.room).emit('newMessage', { room: req.session.room, message: data });
-    })    
+    socket.on('visto', data => {
+        console.log(data)
+        io.to(req.session.room).emit('nuevoVisto', { room: req.session.room, message: data });
+    });
 
 });
 
