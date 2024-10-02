@@ -21,14 +21,12 @@ const ChatInterface = () => {
   const [codigosConexion, setCodigosConexion] = useState([]);
   const [ConexionContacto, setConexionnContacto] = useState([]);
   const { socket, isConnected } = useSocket();
-  const {loVi, setLoVi} = useState(false)
 
   useEffect( () => {
     if (!socket) return;
 
     socket.on("newMessage", (mensaje) => {
       guardarMensaje(mensaje, userId);
-      setLoVi(true)
     });
 
     console.log("cambioSocket")
@@ -223,6 +221,7 @@ const ChatInterface = () => {
       handleSendMessage();
     }
   };
+  
 
   const handleChangeChat = (contact) => {
     let conectado = false;
@@ -265,7 +264,6 @@ const ChatInterface = () => {
         handleSendMessage={handleSendMessage}
         handleKeyPress={handleKeyPress}
         leer={leerChat}
-        vio={loVi}
       />
     </div>
   );
