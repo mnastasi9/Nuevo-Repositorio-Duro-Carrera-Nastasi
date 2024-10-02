@@ -29,7 +29,7 @@ const ContactMessage = ({ message, leer, idUser, currentChat }) => {
       }
   }
   
-    // Solo llamar a la función si currentChat y idUser están definidos
+ 
     if (currentChat?.id && idUser) {
       leerMensajes(idUser, currentChat?.id);
     }

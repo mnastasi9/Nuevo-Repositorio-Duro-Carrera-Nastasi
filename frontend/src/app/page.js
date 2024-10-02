@@ -184,7 +184,6 @@ const ChatInterface = () => {
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       await guardarMensaje(inputValue, currentChat.id, time);
 
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
       setInputValue('');
     }
   };
