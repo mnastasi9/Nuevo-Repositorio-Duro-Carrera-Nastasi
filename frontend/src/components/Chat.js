@@ -23,8 +23,8 @@ const Chat = ({ currentChat, messages, idUser, inputValue, setInputValue, handle
         <>
           <div className={styles.chatHeader}>
             <div className={styles.divCabecera}>
-              <img src={currentChat.avatar} alt={currentChat.name} className={styles.avatar} />
-              <h2>{currentChat.name}</h2>
+              <img src={currentChat.avatar} alt={currentChat.nombre} className={styles.avatar} />
+              <p className={styles.contactName}>{currentChat.nombre}</p>
             </div>
             <button><img src="imagenes/3puntitos.png" className={styles.enviar} /></button>
           </div>
